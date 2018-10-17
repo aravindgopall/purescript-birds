@@ -1,22 +1,8 @@
 module Aviary.Birds (module Aviary.Birds) where 
 
-import Prelude ( class Semigroupoid
-               , class Category
-               , (<<<), (>>>)
-               , ($) 
-               , id
-               , ap
-               , const
-               , compose
-               , flip )
+import Control.Apply (lift2)
+import Prelude (class Apply, class Bind, class Category, class Monad, class Semigroupoid, ap, compose, const, flip, identity, join, ($), (<<<), (=<<), (>>=), (>>>))
 
-import Control.Monad ( class Bind
-                     , class Monad
-                     , (=<<), (>>=)
-                     , join )
-
-import Control.Apply ( class Apply 
-                     , lift2 )
 
 
 infixl 1 t      as &
@@ -223,7 +209,7 @@ baldeagle = (...)(<...<)<<<(...)
 -- |
 -- | `λ x y f . f y x`
 finch ∷ ∀ a b c . a → (c → a → b) → c → b
-finch = flip (flip >>> id)
+finch = flip (flip >>> identity)
 
 
 -- | F* combinator - finch once removed 
@@ -267,7 +253,7 @@ hummingbird = (>>=)
 -- |
 -- | `λ x . x`
 idiot ∷ ∀ t a . Category a ⇒ a t t  
-idiot = id 
+idiot = identity 
 
 
 -- | I* combinator - id bird once removed
@@ -278,7 +264,7 @@ idiot = id
 -- |
 -- | `λ f x . f x`
 idstar ∷ ∀ a b . (a → b) → a → b 
-idstar = id 
+idstar = identity 
 
 
 -- | I** combinator - id bird twice removed 
@@ -287,7 +273,7 @@ idstar = id
 -- |
 -- | `λ f x y . f x y`
 idstarstar ∷ ∀ a b c . (a → b → c) → a → b → c 
-idstarstar = id 
+idstarstar = identity 
 
 
 -- | Psi combinator - psi bird - `on`
@@ -347,7 +333,7 @@ kestrel = const
 -- |
 -- | `λ x y . y`
 kite ∷ ∀ a b c . Category b ⇒ a → b c c
-kite = const id 
+kite = const identity 
 
 
 -- | Φ combinator - phoenix 
@@ -378,7 +364,7 @@ queer = (>>>)
 -- |
 -- | `λ f x g . f (g x)`
 quixotic ∷ ∀ a b c . (b → c) → a → (a → b) → c
-quixotic = (>>>)(flip id) <<< (<<<)
+quixotic = (>>>)(flip identity) <<< (<<<)
 
 
 -- | Q2 combinator - quizzical bird 
@@ -389,7 +375,7 @@ quixotic = (>>>)(flip id) <<< (<<<)
 -- |
 -- | `λ x f g . f (g x)`
 quizzical ∷ ∀ a b c . a → (b → c) → (a → b) → c
-quizzical = (>>>) <<< flip id
+quizzical = (>>>) <<< flip identity
 
 
 -- | Q3 combinator - quircky bird
@@ -400,7 +386,7 @@ quizzical = (>>>) <<< flip id
 -- |
 -- | `λ f x g . g (f x)`
 quirky ∷ ∀ a b c . (a → b) → a → (b → c) → c
-quirky = (<<<)(flip id)
+quirky = (<<<)(flip identity)
 
 
 -- | Q4 combinator - quacky bird
@@ -411,7 +397,7 @@ quirky = (<<<)(flip id)
 -- |
 -- | `λ x f g . g (f x)`
 quacky ∷ ∀ a b c . c → (c → a) → (a → b) → b
-quacky = (<<<)(flip id) <<< flip id
+quacky = (<<<)(flip identity) <<< flip identity
 
 
 -- | O combinator - owl
@@ -487,7 +473,7 @@ starling' = lift2
 -- |
 -- | `λ x f . f x`
 thrush ∷ ∀ a b . a → (a → b) → b
-thrush = flip id 
+thrush = flip identity 
 
 
 -- | V combinator - vireo
@@ -498,7 +484,7 @@ thrush = flip id
 -- |
 -- | `λ x y f . f x y`
 vireo ∷ ∀ a b c . c → b → (c → b → a) → a
-vireo = flip <<< flip id 
+vireo = flip <<< flip identity 
 
 
 -- | V* combinator - vireo once removed
@@ -542,7 +528,7 @@ warbler = join
 -- |
 -- | `λ x f = f x x`
 worbler ∷ ∀ a b . b → (b → b → a) → a
-worbler = flip =<< flip id 
+worbler = flip =<< flip identity 
 
 
 -- | W* combinator - warbler once removed 
@@ -553,7 +539,7 @@ worbler = flip =<< flip id
 -- |
 -- | `λ f x y . f x y y`
 warblerstar ∷ ∀ a b c . (a → b → b → c) → a → b → c
-warblerstar = flip flip id <<< (<<<) ap
+warblerstar = flip flip identity <<< (<<<) ap
 
 
 -- | W** combinator - warbler twice removed 
@@ -564,7 +550,7 @@ warblerstar = flip flip id <<< (<<<) ap
 -- |
 -- | `λ f x y z . f x y z z`
 warblerstarstar ∷ ∀ a b c d . (a → b → c → c → d) → a → b → c → d 
-warblerstarstar = flip flip id <<< (<<<) (flip <<< (<<<) ap)
+warblerstarstar = flip flip identity <<< (<<<) (flip <<< (<<<) ap)
 
 
 -- | compose2
